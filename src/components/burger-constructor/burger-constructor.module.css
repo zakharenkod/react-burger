@@ -5,3 +5,30 @@
   padding-bottom: 20px;
   color: var(--text-primary-color);
 }
+
+.list {
+  margin: 0;
+  padding: 0 6px 0 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.element {
+  background: #1c1c21;
+}
+
+.total {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.price svg {
+  width: 32px;
+  height: 32px;
+}

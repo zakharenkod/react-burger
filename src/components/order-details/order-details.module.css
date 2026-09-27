@@ -1,0 +1,17 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  width: 520px;
+  max-width: 100%;
+}
+
+.image_wrapper {
+  display: flex;
+}
+
+.title,
+.description {
+  text-align: center;
+}
