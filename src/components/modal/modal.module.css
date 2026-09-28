@@ -1,0 +1,50 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 720px;
+  max-width: 95%;
+  max-height: 95%;
+  overflow-y: auto;
+  color: var(--text-primary-color);
+  background: #1c1c21;
+  border: none;
+  border-radius: 40px;
+}
+
+.modal,
+.modal *,
+.modal *::before,
+.modal *::after {
+  box-sizing: border-box;
+}
+
+.button_close {
+  position: absolute;
+  top: 48px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding-right: 40px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}

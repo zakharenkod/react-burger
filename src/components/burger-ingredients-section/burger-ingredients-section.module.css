@@ -1,0 +1,27 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.title {
+  color: #f2f2f3;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin: 0;
+  padding-right: 0;
+  list-style: none;
+}
+
+.item {
+  width: calc(50% - var(--offset-base-size) * 6);
+}
+
+.item:nth-child(1),
+.item:nth-child(2) {
+  margin-top: 0;
+}
