@@ -15,13 +15,13 @@ type TModalProps = {
 const modalRoot = document.getElementById('modal');
 
 export const Modal = ({ title, children, onClose }: TModalProps): React.JSX.Element => {
-  const handleEscButton = (event: KeyboardEvent): void => {
-    if (onClose && event.key === 'Escape') {
-      onClose();
-    }
-  };
-
   useEffect(() => {
+    const handleEscButton = (event: KeyboardEvent): void => {
+      if (onClose && event.key === 'Escape') {
+        onClose();
+      }
+    };
+
     document.addEventListener('keydown', handleEscButton);
 
     return (): void => {

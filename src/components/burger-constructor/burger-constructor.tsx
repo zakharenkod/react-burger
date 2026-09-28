@@ -8,6 +8,7 @@ import * as React from 'react';
 import { BurgerConstructorCard } from '@components/burger-constructor-card/burger-constructor-card.tsx';
 import { Modal } from '@components/modal/modal.tsx';
 import { OrderDetails } from '@components/order-details/order-details.tsx';
+import { useModal } from '@hooks/useModal.ts';
 
 import type { TIngredient, TOrder } from '@utils/types';
 
@@ -30,10 +31,8 @@ export const BurgerConstructor = ({
   const mainIngredients = ingredients.filter(({ type }) => type !== 'bun');
   const [bun] = buns;
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [order, setOrder] = React.useState<TOrder | null>(null);
-
-  const handleClose = (): void => setIsOpen(false);
 
   const completeOrder = (): void => {
     setOrder({ ...orderData });
@@ -41,7 +40,7 @@ export const BurgerConstructor = ({
 
   const handleOrderComplete = (): void => {
     completeOrder();
-    setIsOpen(true);
+    openModal();
   };
 
   return (
@@ -104,8 +103,8 @@ export const BurgerConstructor = ({
         </Button>
       </div>
 
-      {order && isOpen && (
-        <Modal onClose={handleClose}>
+      {order && isModalOpen && (
+        <Modal onClose={closeModal}>
           <OrderDetails
             id={order.id}
             title={order.title}

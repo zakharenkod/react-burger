@@ -20,7 +20,7 @@ export const OrderDetails = ({
       <div className="mt-8 text text_type_main-medium">идентификатор заказа</div>
 
       <div className={`${styles.image_wrapper} mt-15`}>
-        <img src={doneImage} alt="" width={120} height={120} />
+        <img src={doneImage} alt="Заказ успешно оформлен" width={120} height={120} />
       </div>
 
       <div className={`${styles.title} mt-15 text text_type_main-default`}>{title}</div>
