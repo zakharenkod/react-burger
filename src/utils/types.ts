@@ -13,15 +13,36 @@ export type TIngredient = {
   __v: number;
 };
 
+export type TIngredientWithCustomId = TIngredient & {
+  _customId: string;
+};
+
 export type TIngredientType = 'bun' | 'main' | 'sauce';
 
-export type TApiResponse<Data> = {
+export type TApiResponse = {
   success: boolean;
+};
+
+export type TApiResponseWithData<Data> = TApiResponse & {
   data: Data;
 };
 
-export type TOrder = {
-  id: string;
-  title: string;
-  description: string;
+export type TOrderRequest = {
+  ingredients: string[];
+};
+
+export type TOrderResponse = TApiResponse & {
+  name: string;
+  order: {
+    number: number;
+  };
+};
+
+export type TConstructorDragItem = {
+  customId: string;
+  originalIndex: number;
+};
+
+export type TConstructorDropResult = {
+  movedWithinList: boolean;
 };

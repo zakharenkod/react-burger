@@ -1,4 +1,6 @@
 import { BurgerIngredientsCard } from '@components/burger-ingredients-card/burger-ingredients-card.tsx';
+import { useAppSelector } from '@hooks/useStore.ts';
+import { getIngredientCounts } from '@services/constructor-ingredients/slice.ts';
 
 import type { TIngredient } from '@utils/types.ts';
 
@@ -7,6 +9,7 @@ import styles from './burger-ingredients-section.module.css';
 type TBurgerIngredientsSectionProps = {
   name: string;
   ingredients: TIngredient[];
+  headingRef: React.Ref<HTMLHeadingElement>;
 };
 
 const getItemLeftOffsetClass = (index: number): string => {
@@ -16,10 +19,15 @@ const getItemLeftOffsetClass = (index: number): string => {
 export const BurgerIngredientsSection = ({
   name,
   ingredients,
+  headingRef,
 }: TBurgerIngredientsSectionProps): React.JSX.Element => {
+  const ingredientCounts = useAppSelector(getIngredientCounts);
+
   return (
     <section className={styles.section}>
-      <h3 className={`${styles.title} text text_type_main-medium`}>{name}</h3>
+      <h3 ref={headingRef} className={`${styles.title} text text_type_main-medium`}>
+        {name}
+      </h3>
 
       <ul className={`${styles.list} pt-6 pb-10 pl-4`}>
         {ingredients.map((ingredient, index) => (
@@ -29,7 +37,7 @@ export const BurgerIngredientsSection = ({
           >
             <BurgerIngredientsCard
               data={ingredient}
-              count={index === 0 ? 1 : undefined}
+              count={ingredientCounts.get(ingredient._id) ?? 0}
             />
           </li>
         ))}

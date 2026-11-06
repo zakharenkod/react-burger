@@ -1,14 +1,19 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { BurgerIngredientsSection } from '@components/burger-ingredients-section/burger-ingredients-section.tsx';
+import { IngredientDetails } from '@components/ingredient-details/ingredient-details.tsx';
+import { Modal } from '@components/modal/modal.tsx';
+import { useAppDispatch, useAppSelector } from '@hooks/useStore.ts';
+import {
+  clearIngredientInfo,
+  getSelectedIngredient,
+} from '@services/ingredient-info/slice.ts';
+import { getIngredients } from '@services/ingredients/slice.ts';
 
 import type { TIngredient, TIngredientType } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
-
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
 
 const ingredientTypes: Record<TIngredientType, string> = {
   bun: 'Булки',
@@ -16,9 +21,17 @@ const ingredientTypes: Record<TIngredientType, string> = {
   sauce: 'Соусы',
 } as const;
 
-export const BurgerIngredients = ({
-  ingredients,
-}: TBurgerIngredientsProps): React.JSX.Element => {
+const sectionOrder: TIngredientType[] = ['bun', 'main', 'sauce'];
+
+export const BurgerIngredients = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const ingredients = useAppSelector(getIngredients);
+  const ingredientInfo = useAppSelector(getSelectedIngredient);
+
+  const scrollContainerRef = useRef<HTMLUListElement>(null);
+  const headingRefs = useRef(new Map<TIngredientType, HTMLHeadingElement>());
+  const [activeType, setActiveType] = useState<TIngredientType>('bun');
+
   const sectionsMap = ingredients.reduce<Map<TIngredientType, TIngredient[]>>(
     (acc, ingredient) => {
       const { type } = ingredient;
@@ -40,37 +53,105 @@ export const BurgerIngredients = ({
     new Map()
   );
 
+  const handleScroll = useCallback(() => {
+    const scrollContainer = scrollContainerRef.current;
+
+    if (!scrollContainer) return;
+
+    const containerTop = scrollContainer.getBoundingClientRect().top;
+    let closestType: TIngredientType | null = null;
+    let closestDistance = Infinity;
+
+    sectionOrder.forEach((type) => {
+      const heading = headingRefs.current.get(type);
+
+      if (!heading) return;
+
+      const distance = Math.abs(heading.getBoundingClientRect().top - containerTop);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestType = type;
+      }
+    });
+
+    if (closestType !== null) setActiveType(closestType);
+  }, []);
+
+  useEffect(() => {
+    handleScroll();
+  }, [handleScroll, ingredients]);
+
+  const handleTabClick = (type: TIngredientType): void => {
+    const scrollContainer = scrollContainerRef.current;
+    const heading = headingRefs.current.get(type);
+
+    if (!scrollContainer || !heading) return;
+
+    const top =
+      scrollContainer.scrollTop +
+      heading.getBoundingClientRect().top -
+      scrollContainer.getBoundingClientRect().top;
+
+    scrollContainer.scrollTo({
+      top,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
-          {Object.entries(ingredientTypes).map(([type, name], index) => (
+          {sectionOrder.map((type) => (
             <Tab
               key={type}
               value={type}
-              active={index === 0}
+              active={activeType === type}
               onClick={() => {
-                /* TODO */
+                handleTabClick(type);
               }}
             >
-              {name}
+              {ingredientTypes[type]}
             </Tab>
           ))}
         </ul>
       </nav>
 
-      <ul className={`${styles.list} mt-10 custom-scroll`}>
+      <ul
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        className={`${styles.list} mt-10 custom-scroll`}
+      >
         {[...sectionsMap].map(([type, sectionIngredients]) => {
           return (
             <li key={type}>
               <BurgerIngredientsSection
                 name={ingredientTypes[type]}
                 ingredients={sectionIngredients}
+                headingRef={(element) => {
+                  if (element) {
+                    headingRefs.current.set(type, element);
+                  }
+
+                  return () => {
+                    headingRefs.current.delete(type);
+                  };
+                }}
               />
             </li>
           );
         })}
       </ul>
+
+      {ingredientInfo && (
+        <Modal
+          title="Детали ингредиента"
+          onClose={() => dispatch(clearIngredientInfo())}
+        >
+          <IngredientDetails data={ingredientInfo} />
+        </Modal>
+      )}
     </section>
   );
 };
