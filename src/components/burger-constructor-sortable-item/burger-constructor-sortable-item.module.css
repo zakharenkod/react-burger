@@ -1,0 +1,11 @@
+.item {
+  opacity: 1;
+}
+
+.item_dragging {
+  opacity: 0.5;
+}
+
+.item_sortable {
+  cursor: grab;
+}

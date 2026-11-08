@@ -1,0 +1,27 @@
+.dummy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  width: 100%;
+  max-width: 536px;
+  min-height: 80px;
+  padding: 16px 24px;
+  overflow: hidden;
+  color: #f2f2f3;
+  text-align: center;
+  background: #1c1c21;
+  border-radius: var(--common-border-radius-s);
+}
+
+.highlighted {
+  border: 1px dashed #4c4cff;
+}
+
+.dummy_top {
+  border-radius: var(--top-constructor-item-border-radius);
+}
+
+.dummy_bottom {
+  border-radius: var(--bottom-constructor-item-border-radius);
+}

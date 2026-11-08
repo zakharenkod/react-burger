@@ -27,7 +27,7 @@ export const Modal = ({ title, children, onClose }: TModalProps): React.JSX.Elem
     return (): void => {
       document.removeEventListener('keydown', handleEscButton);
     };
-  }, []);
+  }, [onClose]);
 
   if (!modalRoot) return <></>;
 

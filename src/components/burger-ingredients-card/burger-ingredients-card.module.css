@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.card_drugged {
+  opacity: 0.5;
+}
+
 .counter {
   position: absolute;
   right: 0;

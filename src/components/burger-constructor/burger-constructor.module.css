@@ -7,9 +7,10 @@
 }
 
 .list {
+  width: 100%;
   margin: 0;
   padding: 0 6px 0 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   list-style: none;
 }
 
@@ -31,4 +32,8 @@
 .price svg {
   width: 32px;
   height: 32px;
+}
+
+.dropTarget_bun {
+  flex-shrink: 0;
 }

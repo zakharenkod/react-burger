@@ -1,0 +1,6 @@
+.target {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  min-height: 0;
+}
